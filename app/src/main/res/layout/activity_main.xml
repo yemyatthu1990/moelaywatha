@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<include layout="@layout/night_toolbar"/>
+<include layout="@layout/day_toolbar"
+    tools:visibility="gone"/>
+<RelativeLayout
+    android:id="@+id/weather_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      android:weightSum="2"
+      android:layout_margin="@dimen/padding_large">
+    <TextView
+        android:id="@+id/date"
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="၁၈၊ ြကာသာပေတး"/>
+    <TextView
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        tools:text="၃နာရီ ၁၀မိနစ်"
+        />
+  </LinearLayout>
+  <ImageView
+      android:id="@+id/weather_icon"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:layout_above="@+id/weather_text"
+      android:scaleType="centerInside"
+      android:layout_alignParentLeft="true"
+      android:layout_margin="@dimen/padding_large"
+      tools:src="@drawable/big_cloud"/>
+  <TextView
+      android:id="@+id/weather_text"
+      style="@style/AppTheme.WeatherTextStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_centerInParent="true"
+      tools:text="နေသာမယ်နော်။ ထီး ဦးထုပ် ယူဖို့မမေ့နဲ့နော်"/>
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentLeft="true"
+      android:layout_margin="@dimen/padding_large">
+    <TextView
+        android:id="@+id/temp_title"
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_title"/>
+    <TextView
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:id="@+id/temp_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </LinearLayout>
+</RelativeLayout>
+</LinearLayout>

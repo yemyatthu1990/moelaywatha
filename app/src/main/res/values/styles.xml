@@ -1,0 +1,19 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/primary_color</item>
+    <item name="colorPrimaryDark">@color/primary_dark_color</item>
+    <item name="colorAccent">@color/color_accent</item>
+    <item name="android:textColorPrimary">@color/primary_text_color</item>
+    <item name="android:textColorSecondary">@color/secondary_text_color</item>
+  </style>
+
+  <style name="AppTheme.WeatherTextStyle" parent="TextAppearance.AppCompat.Body1">
+    <item name="android:textSize">@dimen/text_size_large</item>
+    <item name="android:textColor">@color/primary_text_color</item>
+    <item name="android:padding">@dimen/padding_normal</item>
+  </style>
+
+</resources>

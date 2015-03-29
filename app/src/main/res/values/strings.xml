@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">မိုးလေ၀သ</string>
+  <string name="account_type">com.yemyatthu.moelaywatha</string>
+  <string name="account_authorities">com.yemyatthu.moelaywatha.provider</string>
+  <string name="title_activity_main">MainActivity</string>
+
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+  <string name="temp_title">အပူချိန်</string>
+  <string name="share">Share</string>
+</resources>

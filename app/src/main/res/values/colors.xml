@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="primary_color">#FFC107</color>
+  <color name="primary_dark_color">#FFA000</color>
+  <color name="primary_light_color">#FFECB3</color>
+  <color name="color_accent">#448AFF</color>
+  <color name="primary_text_color">#212121</color>
+  <color name="secondary_text_color">#ffffffff</color>
+  <color name="divider_color">#B6B6B6</color>
+  <color name="evening_color">#ff000949</color>
+  <color name="evening_darker_color">#ff000937</color>
+  <color name="night_color">#ff191919</color>
+  <color name="night__darker_color">#ff000000</color>
+  <color name="morning_color">#ff05c4ff</color>
+  <color name="morning_darker_color">#ff027ec7</color>
+  <color name="afternoon_color">#ffffc107</color>
+  <color name="afternoon_darker_color">#FFFFA10B</color>
+</resources>
