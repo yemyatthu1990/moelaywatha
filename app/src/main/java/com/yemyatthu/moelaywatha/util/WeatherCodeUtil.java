@@ -174,7 +174,7 @@ public class WeatherCodeUtil {
         .replace('0', '၀');
   }
 
-  public static void changeWeatherBackground(Context context,View background,Toolbar toolbar,ImageView weatherIcon,ImageView nextDays,int timeOfDay,TextView... textViews){
+  public static void changeWeatherBackground(Context context,View background,Toolbar toolbar,ImageView weatherIcon,int timeOfDay,TextView... textViews){
     switch (timeOfDay){
       case 18:case 19:case 20:case 21:case 22:case 23:
         background.setBackgroundColor(context.getResources().getColor(R.color.evening_color));
@@ -183,7 +183,7 @@ public class WeatherCodeUtil {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
-        nextDays.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_navigate_next_white_36dp));
+
         break;
       case 24:case 0:case 1:case 2:case 3:case 4:case 5:
         background.setBackgroundColor(context.getResources().getColor(R.color.night_color));
@@ -192,7 +192,7 @@ public class WeatherCodeUtil {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
-        nextDays.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_navigate_next_white_36dp));
+
         break;
       case 6:case 7:case 8:case 9:case 10:case 11:
         background.setBackgroundColor(context.getResources().getColor(R.color.morning_color));
@@ -200,7 +200,7 @@ public class WeatherCodeUtil {
         for(TextView textView:textViews){
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
-        nextDays.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_navigate_next_black_36dp));
+
         break;
       case 12:case 13:case 14:case 15:case 16:case 17:
         background.setBackgroundColor(context.getResources().getColor(R.color.afternoon_color));
@@ -208,7 +208,7 @@ public class WeatherCodeUtil {
         for(TextView textView:textViews){
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
-        nextDays.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_navigate_next_black_36dp));
+
         break;
     }
   }
@@ -239,5 +239,14 @@ public class WeatherCodeUtil {
       e.printStackTrace();
     }
    return null;
+  }
+
+  public static void delayButtonClick(final View view){
+    view.setClickable(false);
+    view.postDelayed(new Runnable() {
+      @Override public void run() {
+        view.setClickable(true);
+      }
+    },1000);
   }
 }

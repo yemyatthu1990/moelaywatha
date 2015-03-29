@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.yemyatthu.moelaywatha.R;
 import com.yemyatthu.moelaywatha.model.Weather;
 import com.yemyatthu.moelaywatha.sync.WeatherSyncAdapter;
@@ -35,9 +37,10 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.weather_icon) ImageView mWeatherIcon;
   @InjectView(R.id.weather_background) RelativeLayout mWeatherBackground;
   @InjectView(R.id.temp_data) TextView mTempData;
-  @InjectView(R.id.next_days) ImageView mNextDays;
+  @InjectView(R.id.plus_floating_button) FloatingActionsMenu mPlusFloatingMenu;
+  @InjectView(R.id.share_fab) FloatingActionButton mShareFab;
+  @InjectView(R.id.list_fab) FloatingActionButton mListFab;
 
-  private ShareActionProvider mShareActionProvider;
   private int mTodayDate;
   private Realm mRealm;
   private Weather mWeather = null;
@@ -87,12 +90,12 @@ public class MainActivity extends BaseActivity {
     if(mHourOfDay<18 && mHourOfDay>5){
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mDayToolbar,mWeatherIcon,mNextDays,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
+      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mDayToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
     }
     else{
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mNextDays,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
+      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
 
     }
         mRealm.executeTransaction(new Realm.Transaction() {
@@ -117,16 +120,12 @@ public class MainActivity extends BaseActivity {
       WeatherSyncAdapter.syncImmediately(this);
     }
 
-
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu, menu);
-    MenuItem item = menu.findItem(R.id.menu_item_share);
-    mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-    setShareIntent();
     return true;
   }
 
@@ -150,7 +149,7 @@ public class MainActivity extends BaseActivity {
     this.unregisterReceiver(syncFinishedReceiver);
   }
 
-  private void setShareIntent() {
+  private Intent getShareIntent() {
     Intent shareIntent = new Intent();
     shareIntent.setAction(Intent.ACTION_SEND);
     shareIntent.putExtra(Intent.EXTRA_STREAM,
@@ -158,9 +157,18 @@ public class MainActivity extends BaseActivity {
     shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.yemyatthu.moelaywatha");
     shareIntent.setType("image/png");
     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-    if (mShareActionProvider != null) {
-      mShareActionProvider.setShareIntent(shareIntent);
-    }
+    return shareIntent;
+  }
+  @OnClick(R.id.share_fab)
+  void onClickShareFab(){
+    WeatherCodeUtil.delayButtonClick(mShareFab);
+    if(mPlusFloatingMenu.isExpanded()) mPlusFloatingMenu.collapse();
+    Intent.createChooser(getShareIntent(),"Share via");
+    new Handler().postDelayed(new Runnable() {
+      @Override public void run() {
+        startActivity(getShareIntent());
+      }
+    },1000);
   }
 }
 

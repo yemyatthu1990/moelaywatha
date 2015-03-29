@@ -15,4 +15,8 @@
   <color name="morning_darker_color">#ff027ec7</color>
   <color name="afternoon_color">#ffffc107</color>
   <color name="afternoon_darker_color">#FFFFA10B</color>
+  <color name="half_black">#808080</color>
+  <color name="white">#fafafa</color>
+  <color name="white_pressed">#f1f1f1</color>
+  <color name="black_semi_transparent">#B2000000</color>
 </resources>
