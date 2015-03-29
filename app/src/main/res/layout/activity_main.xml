@@ -57,7 +57,8 @@
       android:layout_centerInParent="true"
       tools:text="နေသာမယ်နော်။ ထီး ဦးထုပ် ယူဖို့မမေ့နဲ့နော်"/>
   <LinearLayout
-      android:layout_width="wrap_content"
+      android:id="@+id/temp_container"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:layout_alignParentBottom="true"
@@ -75,7 +76,17 @@
         android:textSize="@dimen/text_size_normal"
         android:id="@+id/temp_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-  </LinearLayout>
+        android:layout_height="wrap_content"
+        tools:text="၃၆ ဒီဂရီစင်တီဂရိတ်"/>
+      </LinearLayout>
+  <ImageView
+      android:id="@+id/next_days"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/temp_container"
+      android:layout_marginRight="@dimen/padding_large"
+      android:layout_alignParentRight="true"
+      android:src="@drawable/ic_navigate_next_black_36dp"/>
+
 </RelativeLayout>
 </LinearLayout>

@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.weather_icon) ImageView mWeatherIcon;
   @InjectView(R.id.weather_background) RelativeLayout mWeatherBackground;
   @InjectView(R.id.temp_data) TextView mTempData;
+  @InjectView(R.id.next_days) ImageView mNextDays;
 
   private ShareActionProvider mShareActionProvider;
   private int mTodayDate;
@@ -86,12 +87,12 @@ public class MainActivity extends BaseActivity {
     if(mHourOfDay<18 && mHourOfDay>5){
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mDayToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
+      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mDayToolbar,mWeatherIcon,mNextDays,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
     }
     else{
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
+      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mNextDays,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
 
     }
         mRealm.executeTransaction(new Realm.Transaction() {
@@ -112,6 +113,8 @@ public class MainActivity extends BaseActivity {
           String.valueOf(Math.round(((mWeather.getMaxTemp() + mWeather.getMinTemp()) / 2) - 271)));
       mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
       mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(this,mWeatherCode,mHourOfDay));
+    }else{
+      WeatherSyncAdapter.syncImmediately(this);
     }
 
 
