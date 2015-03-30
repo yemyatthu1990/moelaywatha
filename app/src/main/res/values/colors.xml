@@ -4,6 +4,7 @@
   <color name="primary_dark_color">#FFA000</color>
   <color name="primary_light_color">#FFECB3</color>
   <color name="color_accent">#448AFF</color>
+  <color name="dark_color_accent">FF3F7DEB</color>
   <color name="primary_text_color">#212121</color>
   <color name="secondary_text_color">#ffffffff</color>
   <color name="divider_color">#B6B6B6</color>
@@ -15,8 +16,4 @@
   <color name="morning_darker_color">#ff027ec7</color>
   <color name="afternoon_color">#ffffc107</color>
   <color name="afternoon_darker_color">#FFFFA10B</color>
-  <color name="half_black">#808080</color>
-  <color name="white">#fafafa</color>
-  <color name="white_pressed">#f1f1f1</color>
-  <color name="black_semi_transparent">#B2000000</color>
 </resources>

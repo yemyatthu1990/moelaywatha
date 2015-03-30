@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.yemyatthu.moelaywatha.R;
 import com.yemyatthu.moelaywatha.model.Weather;
 import com.yemyatthu.moelaywatha.sync.WeatherSyncAdapter;
@@ -37,10 +33,6 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.weather_icon) ImageView mWeatherIcon;
   @InjectView(R.id.weather_background) RelativeLayout mWeatherBackground;
   @InjectView(R.id.temp_data) TextView mTempData;
-  @InjectView(R.id.plus_floating_button) FloatingActionsMenu mPlusFloatingMenu;
-  @InjectView(R.id.share_fab) FloatingActionButton mShareFab;
-  @InjectView(R.id.list_fab) FloatingActionButton mListFab;
-
   private int mTodayDate;
   private Realm mRealm;
   private Weather mWeather = null;
@@ -61,13 +53,8 @@ public class MainActivity extends BaseActivity {
       });
 
       if(mWeather!= null){
-        mWeatherCode = mWeather.getWeatherCode().first().getWeatherCode();
-        mWeatherTextView.setText(WeatherCodeUtil.getWeatherDescription(MainActivity.this,mWeatherCode,mHourOfDay));
-        String tempData =WeatherCodeUtil.changeEngToBur(
-            String.valueOf(Math.round(((mWeather.getMaxTemp() + mWeather.getMinTemp()) / 2) - 271)));
-        mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
-        mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(MainActivity.this,mWeatherCode,mHourOfDay));
-      }
+        updateWeatherUi(mWeather);
+             }
     }
   };
 
@@ -78,6 +65,7 @@ public class MainActivity extends BaseActivity {
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
     WeatherSyncAdapter.initializeSyncAdapter(getApplicationContext());
+
     mRealm = Realm.getInstance(getApplicationContext());
     Calendar calendar = Calendar.getInstance();
     mTodayDate = calendar.get(Calendar.DATE);
@@ -87,6 +75,7 @@ public class MainActivity extends BaseActivity {
     String date = WeatherCodeUtil.changeEngToBur(String.valueOf(calendar.get(Calendar.DATE)));
     mTime.setText(hour+" နာရီ");
     mDate.setText(date+" ရက်");
+
     if(mHourOfDay<18 && mHourOfDay>5){
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
@@ -98,6 +87,8 @@ public class MainActivity extends BaseActivity {
       WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
 
     }
+    //Temporarily Hide toolbar
+    getSupportActionBar().hide();
         mRealm.executeTransaction(new Realm.Transaction() {
       @Override public void execute(Realm realm) {
         try{
@@ -110,12 +101,7 @@ public class MainActivity extends BaseActivity {
     });
 
     if(mWeather!= null){
-      mWeatherCode = mWeather.getWeatherCode().first().getWeatherCode();
-      mWeatherTextView.setText(WeatherCodeUtil.getWeatherDescription(this,mWeatherCode,mHourOfDay));
-      String tempData =WeatherCodeUtil.changeEngToBur(
-          String.valueOf(Math.round(((mWeather.getMaxTemp() + mWeather.getMinTemp()) / 2) - 271)));
-      mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
-      mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(this,mWeatherCode,mHourOfDay));
+      updateWeatherUi(mWeather);
     }else{
       WeatherSyncAdapter.syncImmediately(this);
     }
@@ -159,16 +145,14 @@ public class MainActivity extends BaseActivity {
     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     return shareIntent;
   }
-  @OnClick(R.id.share_fab)
-  void onClickShareFab(){
-    WeatherCodeUtil.delayButtonClick(mShareFab);
-    if(mPlusFloatingMenu.isExpanded()) mPlusFloatingMenu.collapse();
-    Intent.createChooser(getShareIntent(),"Share via");
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
-        startActivity(getShareIntent());
-      }
-    },1000);
+
+  public void updateWeatherUi(Weather weather){
+    mWeatherCode = weather.getWeatherCode().first().getWeatherCode();
+    mWeatherTextView.setText(WeatherCodeUtil.getWeatherDescription(MainActivity.this,mWeatherCode,mHourOfDay));
+    String tempData =WeatherCodeUtil.changeEngToBur(
+        String.valueOf(Math.round(((weather.getMaxTemp() + weather.getMinTemp()) / 2) - 271)));
+    mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
+    mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(MainActivity.this,mWeatherCode,mHourOfDay));
   }
 }
 
