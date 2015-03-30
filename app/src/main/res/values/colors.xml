@@ -4,7 +4,6 @@
   <color name="primary_dark_color">#FFA000</color>
   <color name="primary_light_color">#FFECB3</color>
   <color name="color_accent">#448AFF</color>
-  <color name="dark_color_accent">FF3F7DEB</color>
   <color name="primary_text_color">#212121</color>
   <color name="secondary_text_color">#ffffffff</color>
   <color name="divider_color">#B6B6B6</color>
