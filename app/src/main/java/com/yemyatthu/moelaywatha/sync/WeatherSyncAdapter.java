@@ -187,6 +187,8 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter{
           weather.setMinTemp(jsonObject.get("main").getAsJsonObject().get("temp_min").getAsFloat());
           weather.setDate(calendar.get(Calendar.DATE));
           weather.setWeatherCode(weatherCodes);
+          weather.setLastUpdatedTime(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)));
+          weather.setCity(jsonObject.get("name").getAsString());
         }
       });
       getContext().sendBroadcast(new Intent(SYNC_FINISHED));

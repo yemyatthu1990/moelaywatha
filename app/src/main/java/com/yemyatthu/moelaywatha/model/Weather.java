@@ -15,6 +15,16 @@ public class Weather extends RealmObject {
   private int date;
   private String lastUpdatedTime;
 
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  private String city;
+
   public String getLastUpdatedTime() {
     return lastUpdatedTime;
   }

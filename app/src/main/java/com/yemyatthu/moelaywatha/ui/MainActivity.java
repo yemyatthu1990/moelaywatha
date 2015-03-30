@@ -33,6 +33,8 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.weather_icon) ImageView mWeatherIcon;
   @InjectView(R.id.weather_background) RelativeLayout mWeatherBackground;
   @InjectView(R.id.temp_data) TextView mTempData;
+  @InjectView(R.id.city) TextView mCity;
+  @InjectView(R.id.last_updated) TextView mLastUpdated;
   private int mTodayDate;
   private Realm mRealm;
   private Weather mWeather = null;
@@ -76,12 +78,12 @@ public class MainActivity extends BaseActivity {
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
       WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,
-          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime);
+          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated);
     } else {
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
       WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,
-          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime);
+          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated );
     }
 
     //Temporarily Hide toolbar
@@ -150,6 +152,8 @@ public class MainActivity extends BaseActivity {
         String.valueOf(Math.round(((weather.getMaxTemp() + weather.getMinTemp()) / 2) - 271)));
     mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
     mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(MainActivity.this,mWeatherCode,mHourOfDay));
+    mLastUpdated.setText(getLastUpdatedTime(mWeather.getLastUpdatedTime()));
+    mCity.setText(mWeather.getCity());
   }
 
   private void setTypeFace(TextView... textViews) {
@@ -157,5 +161,9 @@ public class MainActivity extends BaseActivity {
     for (TextView textView : textViews) {
       textView.setTypeface(pdsTypeface);
     }
+  }
+
+  private String getLastUpdatedTime(String time){
+    return "Last Updated: " + time;
   }
 }
