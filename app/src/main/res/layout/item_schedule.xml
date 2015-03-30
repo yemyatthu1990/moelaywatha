@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="@dimen/padding_small"
+    card_view:cardElevation="@dimen/padding_small">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/schedule_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:gravity="left"
+        android:padding="@dimen/padding_normal"
+        tools:text="၂၃ရက် ေသာြကာေန့"/>
+    <ImageView
+        android:id="@+id/schedule_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_normal"
+        android:layout_below="@id/schedule_date"
+        tools:src="@drawable/morning_clear"/>
+    <TextView
+        android:layout_toRightOf="@id/schedule_icon"
+        android:layout_alignBottom="@id/schedule_icon"
+        android:layout_alignTop="@id/schedule_icon"
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_normal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:text = "၃၂ ဒီဂရီစင်တီဂရိတ်"/>
+  </RelativeLayout>
+</android.support.v7.widget.CardView>
