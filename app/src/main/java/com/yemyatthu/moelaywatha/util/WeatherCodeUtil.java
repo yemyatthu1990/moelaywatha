@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.yemyatthu.moelaywatha.R;
@@ -174,7 +175,7 @@ public class WeatherCodeUtil {
         .replace('0', '၀');
   }
 
-  public static void changeWeatherBackground(Context context,View background,Toolbar toolbar,ImageView weatherIcon,int timeOfDay,TextView... textViews){
+  public static void changeWeatherBackground(Context context,View background,Toolbar toolbar,ImageView weatherIcon,ImageButton expandedMenu,int timeOfDay,TextView... textViews){
     switch (timeOfDay){
       case 18:case 19:case 20:case 21:case 22:case 23:
         background.setBackgroundColor(context.getResources().getColor(R.color.evening_color));
@@ -183,6 +184,7 @@ public class WeatherCodeUtil {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
+        expandedMenu.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
 
         break;
       case 24:case 0:case 1:case 2:case 3:case 4:case 5:
@@ -192,6 +194,7 @@ public class WeatherCodeUtil {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
+        expandedMenu.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
 
         break;
       case 6:case 7:case 8:case 9:case 10:case 11:
@@ -200,7 +203,8 @@ public class WeatherCodeUtil {
         for(TextView textView:textViews){
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
-
+        weatherIcon.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
+        expandedMenu.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
         break;
       case 12:case 13:case 14:case 15:case 16:case 17:
         background.setBackgroundColor(context.getResources().getColor(R.color.afternoon_color));
@@ -208,7 +212,8 @@ public class WeatherCodeUtil {
         for(TextView textView:textViews){
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
-
+        weatherIcon.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
+        expandedMenu.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
         break;
     }
   }

@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.weather_background) RelativeLayout mWeatherBackground;
   @InjectView(R.id.temp_data) TextView mTempData;
   @InjectView(R.id.city) TextView mCity;
+  @InjectView(R.id.expanded_menu) ImageButton mExpandedMenu;
   @InjectView(R.id.last_updated) TextView mLastUpdated;
   private int mTodayDate;
   private Realm mRealm;
@@ -77,12 +79,12 @@ public class MainActivity extends BaseActivity {
     if (mHourOfDay < 18 && mHourOfDay > 5) {
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,
+      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,mExpandedMenu,
           mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated);
     } else {
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,
+      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,mExpandedMenu,
           mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated );
     }
 

@@ -86,12 +86,11 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:layout_alignParentBottom="true"
-      android:weightSum="2"
       android:layout_alignParentLeft="true"
       android:layout_marginLeft="@dimen/padding_large"
-      android:layout_marginRight="@dimen/padding_large"
       android:layout_marginBottom="@dimen/padding_normal">
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -112,6 +111,13 @@
         android:layout_height="match_parent"
         tools:text="Last updated: 12:09 am"/>
     </LinearLayout>
+    <ImageButton
+        android:id="@+id/expanded_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        style="?android:attr/borderlessButtonStyle"
+        android:src="@drawable/ic_menu_white_36dp"/>
       </LinearLayout>
 </RelativeLayout>
 </LinearLayout>
