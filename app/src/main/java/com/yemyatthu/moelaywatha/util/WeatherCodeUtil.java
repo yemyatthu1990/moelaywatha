@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -70,10 +70,9 @@ public class WeatherCodeUtil {
       case 622:
         return "ဟေး...\n" + "နှင်းတွေကျနေပြီဟေ့";
       case 800:
-        if(timeOfDay<18 && timeOfDay>5){
+        if (timeOfDay < 18 && timeOfDay > 5) {
           return "ကောင်းကင်ကြီးကပြာလို့...\n" + "နေမင်းကြီးကလည်းသာလို့";
-        }
-        else{
+        } else {
           return "တိမ်တွေကင်းလို့...\n" + "ကြယ်လေးတွေကို မြင်နိုင်တယ်နော်";
         }
       case 801:
@@ -136,22 +135,19 @@ public class WeatherCodeUtil {
       case 622:
         return context.getResources().getDrawable(R.drawable.snow);
       case 800:
-        if(timeOfDay<12 && timeOfDay>5){
+        if (timeOfDay < 12 && timeOfDay > 5) {
           return context.getResources().getDrawable(R.drawable.morning_clear);
-        }
-        else if(timeOfDay<18 && timeOfDay>11){
+        } else if (timeOfDay < 18 && timeOfDay > 11) {
           return context.getResources().getDrawable(R.drawable.afternoon_clear);
-        }
-        else{
+        } else {
           return context.getResources().getDrawable(R.drawable.night_clear);
         }
       case 801:
       case 802:
       case 803:
-        if(timeOfDay<18 && timeOfDay>5){
+        if (timeOfDay < 18 && timeOfDay > 5) {
           return context.getResources().getDrawable(R.drawable.small_cloud_day);
-        }
-        else{
+        } else {
           return context.getResources().getDrawable(R.drawable.small_cloud_night);
         }
       case 804:
@@ -175,41 +171,63 @@ public class WeatherCodeUtil {
         .replace('0', '၀');
   }
 
-  public static void changeWeatherBackground(Context context,View background,Toolbar toolbar,ImageView weatherIcon,ImageButton expandedMenu,int timeOfDay,TextView... textViews){
-    switch (timeOfDay){
-      case 18:case 19:case 20:case 21:case 22:case 23:
+  public static void changeWeatherBackground(Context context, View background,
+      ImageView weatherIcon, ImageButton expandedMenu, int timeOfDay, TextView... textViews) {
+    switch (timeOfDay) {
+      case 18:
+      case 19:
+      case 20:
+      case 21:
+      case 22:
+      case 23:
         background.setBackgroundColor(context.getResources().getColor(R.color.evening_color));
-        toolbar.setBackgroundColor(context.getResources().getColor(R.color.evening_darker_color));
-        for(TextView textView:textViews){
+        //toolbar.setBackgroundColor(context.getResources().getColor(R.color.evening_darker_color));
+        for (TextView textView : textViews) {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
         expandedMenu.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
 
         break;
-      case 24:case 0:case 1:case 2:case 3:case 4:case 5:
+      case 24:
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
         background.setBackgroundColor(context.getResources().getColor(R.color.night_color));
-        toolbar.setBackgroundColor(context.getResources().getColor(R.color.night__darker_color));
-        for(TextView textView:textViews){
+        //toolbar.setBackgroundColor(context.getResources().getColor(R.color.night__darker_color));
+        for (TextView textView : textViews) {
           textView.setTextColor(context.getResources().getColor(R.color.secondary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
         expandedMenu.setColorFilter(context.getResources().getColor(R.color.secondary_text_color));
 
         break;
-      case 6:case 7:case 8:case 9:case 10:case 11:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+      case 11:
         background.setBackgroundColor(context.getResources().getColor(R.color.morning_color));
-        toolbar.setBackgroundColor(context.getResources().getColor(R.color.morning_darker_color));
-        for(TextView textView:textViews){
+        //toolbar.setBackgroundColor(context.getResources().getColor(R.color.morning_darker_color));
+        for (TextView textView : textViews) {
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
         expandedMenu.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
         break;
-      case 12:case 13:case 14:case 15:case 16:case 17:
+      case 12:
+      case 13:
+      case 14:
+      case 15:
+      case 16:
+      case 17:
         background.setBackgroundColor(context.getResources().getColor(R.color.afternoon_color));
-        toolbar.setBackgroundColor(context.getResources().getColor(R.color.afternoon_darker_color));
-        for(TextView textView:textViews){
+        //toolbar.setBackgroundColor(context.getResources().getColor(R.color.afternoon_darker_color));
+        for (TextView textView : textViews) {
           textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
         weatherIcon.setColorFilter(context.getResources().getColor(R.color.primary_text_color));
@@ -218,8 +236,7 @@ public class WeatherCodeUtil {
     }
   }
 
-
-  public static Uri saveScreenShotToSd(View view){
+  public static Uri saveScreenShotToSd(View view) {
     // image naming and path  to include sd card  appending name you choose for file
     String mPath = Environment.getExternalStorageDirectory().toString() + "/" + "temp_sc.jpeg";
 
@@ -238,20 +255,25 @@ public class WeatherCodeUtil {
       fout.flush();
       fout.close();
       return Uri.fromFile(imageFile);
-
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-   return null;
+    return null;
   }
 
-  public static void delayButtonClick(final View view){
+  public static void delayButtonClick(final View view) {
     view.setClickable(false);
     view.postDelayed(new Runnable() {
       @Override public void run() {
         view.setClickable(true);
       }
-    },1000);
+    }, 1000);
+  }
+
+  public static int dpToPx(int dp,Context context) {
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    return px;
   }
 }

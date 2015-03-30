@@ -6,28 +6,33 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import com.yemyatthu.moelaywatha.R;
 import com.yemyatthu.moelaywatha.model.Weather;
 import com.yemyatthu.moelaywatha.sync.WeatherSyncAdapter;
-import com.yemyatthu.moelaywatha.util.WeatherCodeUtil;
 import io.realm.Realm;
 import io.realm.exceptions.RealmException;
 import java.util.Calendar;
 import timber.log.Timber;
 
+import static com.yemyatthu.moelaywatha.util.WeatherCodeUtil.changeEngToBur;
+import static com.yemyatthu.moelaywatha.util.WeatherCodeUtil.changeWeatherBackground;
+import static com.yemyatthu.moelaywatha.util.WeatherCodeUtil.getWeatherDescription;
+import static com.yemyatthu.moelaywatha.util.WeatherCodeUtil.getWeatherDrawable;
+import static com.yemyatthu.moelaywatha.util.WeatherCodeUtil.saveScreenShotToSd;
+
 public class MainActivity extends BaseActivity {
-  @InjectView(R.id.day_toolbar) Toolbar mDayToolbar;
-  @InjectView(R.id.night_toolbar) Toolbar mNightToolbar;
   @InjectView(R.id.weather_text) TextView mWeatherTextView;
   @InjectView(R.id.date) TextView mDate;
   @InjectView(R.id.time) TextView mTime;
@@ -37,11 +42,16 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.city) TextView mCity;
   @InjectView(R.id.expanded_menu) ImageButton mExpandedMenu;
   @InjectView(R.id.last_updated) TextView mLastUpdated;
+  @InjectView(R.id.schedule_list_container) LinearLayout mScheduleListContainer;
+  @InjectView(R.id.date_container) LinearLayout mDateContainer;
+  @InjectView(R.id.schedule_recycler_view) RecyclerView mScheduleRecyclerView;
   private int mTodayDate;
   private Realm mRealm;
   private Weather mWeather = null;
   private int mHourOfDay;
   private int mWeatherCode;
+  private boolean mSlideUp = false;
+  private RecyclerView.LayoutManager mLayoutManager;
   private BroadcastReceiver syncFinishedReceiver = new BroadcastReceiver() {
     @Override public void onReceive(Context context, Intent intent) {
       Timber.d("receive");
@@ -54,8 +64,8 @@ public class MainActivity extends BaseActivity {
           }
         }
       });
-      if(mWeather!=null){
-      updateWeatherUi(mWeather);
+      if (mWeather != null) {
+        updateWeatherUi(mWeather);
       }
     }
   };
@@ -66,30 +76,24 @@ public class MainActivity extends BaseActivity {
     ButterKnife.inject(this);
     WeatherSyncAdapter.initializeSyncAdapter(getApplicationContext());
 
+    mScheduleRecyclerView.setHasFixedSize(true);
+    mLayoutManager = new LinearLayoutManager(this);
+    mScheduleRecyclerView.setLayoutManager(mLayoutManager);
+
     mRealm = Realm.getInstance(getApplicationContext());
     Calendar calendar = Calendar.getInstance();
     mTodayDate = calendar.get(Calendar.DATE);
     mHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
-    String hour = WeatherCodeUtil.changeEngToBur(String.valueOf(calendar.get(Calendar.HOUR)));
-    String date = WeatherCodeUtil.changeEngToBur(String.valueOf(calendar.get(Calendar.DATE)));
+    String hour = changeEngToBur(String.valueOf(calendar.get(Calendar.HOUR)));
+    String date = changeEngToBur(String.valueOf(calendar.get(Calendar.DATE)));
 
     mTime.setText(hour + " နာရီ");
     mDate.setText(date + " ရက်");
-    if (mHourOfDay < 18 && mHourOfDay > 5) {
-      setSupportActionBar(mDayToolbar);
-      mNightToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,mExpandedMenu,
-          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated);
-    } else {
-      setSupportActionBar(mNightToolbar);
-      mDayToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,mExpandedMenu,
-          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime,mCity,mLastUpdated );
-    }
 
-    //Temporarily Hide toolbar
-    getSupportActionBar().hide();
+    changeWeatherBackground(this, mWeatherBackground, mWeatherIcon, mExpandedMenu, mHourOfDay,
+        mTempData, mWeatherTextView, mDate, mTime, mCity, mLastUpdated);
+
     mRealm.executeTransaction(new Realm.Transaction() {
       @Override public void execute(Realm realm) {
         try {
@@ -99,7 +103,6 @@ public class MainActivity extends BaseActivity {
         }
       }
     });
-
 
     if (mWeather != null) {
       updateWeatherUi(mWeather);
@@ -139,7 +142,7 @@ public class MainActivity extends BaseActivity {
     Intent shareIntent = new Intent();
     shareIntent.setAction(Intent.ACTION_SEND);
     shareIntent.putExtra(Intent.EXTRA_STREAM,
-        WeatherCodeUtil.saveScreenShotToSd(mWeatherBackground));
+        saveScreenShotToSd(mWeatherBackground));
     shareIntent.putExtra(Intent.EXTRA_TEXT,
         "https://play.google.com/store/apps/details?id=com.yemyatthu.moelaywatha");
     shareIntent.setType("image/png");
@@ -147,13 +150,15 @@ public class MainActivity extends BaseActivity {
     return shareIntent;
   }
 
-  public void updateWeatherUi(Weather weather){
+  public void updateWeatherUi(Weather weather) {
     mWeatherCode = weather.getWeatherCode().first().getWeatherCode();
-    mWeatherTextView.setText(WeatherCodeUtil.getWeatherDescription(MainActivity.this,mWeatherCode,mHourOfDay));
-    String tempData =WeatherCodeUtil.changeEngToBur(
+    mWeatherTextView.setText(
+        getWeatherDescription(MainActivity.this, mWeatherCode, mHourOfDay));
+    String tempData = changeEngToBur(
         String.valueOf(Math.round(((weather.getMaxTemp() + weather.getMinTemp()) / 2) - 271)));
-    mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
-    mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(MainActivity.this,mWeatherCode,mHourOfDay));
+    mTempData.setText(tempData + " ဒီဂရီစင်တီဂရိတ်");
+    mWeatherIcon.setImageDrawable(
+        getWeatherDrawable(MainActivity.this, mWeatherCode, mHourOfDay));
     mLastUpdated.setText(getLastUpdatedTime(mWeather.getLastUpdatedTime()));
     mCity.setText(mWeather.getCity());
   }
@@ -165,7 +170,25 @@ public class MainActivity extends BaseActivity {
     }
   }
 
-  private String getLastUpdatedTime(String time){
+  private String getLastUpdatedTime(String time) {
     return "Last Updated: " + time;
+  }
+
+  @OnClick(R.id.expanded_menu) void slideUpScheduleList() {
+    Timber.d("sliding up");
+    if(!mSlideUp) {
+      int padding = getResources().getDimensionPixelSize(R.dimen.padding_large);
+      mWeatherBackground.animate()
+          .translationY(-(mWeatherBackground.getHeight() - (mDateContainer.getHeight()+padding)))
+          .setDuration(1000)
+          .setStartDelay(200);
+      mSlideUp=true;
+    }else{
+      mWeatherBackground.animate()
+          .translationY(0)
+          .setDuration(1000)
+          .setStartDelay(200);
+      mSlideUp=false;
+    }
   }
 }
