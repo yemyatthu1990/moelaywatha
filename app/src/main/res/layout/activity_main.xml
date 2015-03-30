@@ -49,6 +49,7 @@
       android:layout_alignParentLeft="true"
       android:layout_margin="@dimen/padding_large"
       tools:src="@drawable/big_cloud"/>
+
   <TextView
       android:id="@+id/weather_text"
       style="@style/AppTheme.WeatherTextStyle"
@@ -62,23 +63,47 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      android:layout_alignParentBottom="true"
+      android:layout_above="@+id/date_container"
       android:layout_alignParentLeft="true"
-      android:layout_margin="@dimen/padding_large">
-    <TextView
-        android:id="@+id/temp_title"
-        style="@style/AppTheme.WeatherTextStyle"
-        android:textSize="@dimen/text_size_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp_title"/>
+      android:layout_marginLeft="@dimen/padding_large">
     <TextView
         style="@style/AppTheme.WeatherTextStyle"
         android:textSize="@dimen/text_size_normal"
         android:id="@+id/temp_data"
+        android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:text="၃၆ ဒီဂရီစင်တီဂရိတ်"/>
+      </LinearLayout>
+  <LinearLayout
+      android:id="@+id/date_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_alignParentBottom="true"
+      android:weightSum="2"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="@dimen/padding_large"
+      android:layout_marginRight="@dimen/padding_large"
+      android:layout_marginBottom="@dimen/padding_normal">
+    <TextView
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_small"
+        android:id="@+id/city"
+        android:gravity="start"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:text="Botataung"/>
+    <TextView
+        style="@style/AppTheme.WeatherTextStyle"
+        android:textSize="@dimen/text_size_small"
+        android:id="@+id/last_updated"
+        android:gravity="end"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:text="Last updated: 12:09 am"/>
       </LinearLayout>
 </RelativeLayout>
 </LinearLayout>

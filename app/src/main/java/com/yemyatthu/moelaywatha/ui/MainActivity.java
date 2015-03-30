@@ -28,7 +28,6 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.day_toolbar) Toolbar mDayToolbar;
   @InjectView(R.id.night_toolbar) Toolbar mNightToolbar;
   @InjectView(R.id.weather_text) TextView mWeatherTextView;
-  @InjectView(R.id.temp_title) TextView mTempTitle;
   @InjectView(R.id.date) TextView mDate;
   @InjectView(R.id.time) TextView mTime;
   @InjectView(R.id.weather_icon) ImageView mWeatherIcon;
@@ -77,12 +76,12 @@ public class MainActivity extends BaseActivity {
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
       WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,
-          mHourOfDay, mTempData, mWeatherTextView, mTempTitle, mDate, mTime);
+          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime);
     } else {
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
       WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,
-          mHourOfDay, mTempData, mWeatherTextView, mTempTitle, mDate, mTime);
+          mHourOfDay, mTempData, mWeatherTextView, mDate, mTime);
     }
 
     //Temporarily Hide toolbar
@@ -104,7 +103,7 @@ public class MainActivity extends BaseActivity {
       WeatherSyncAdapter.syncImmediately(this);
     }
 
-    this.setTypeFace(mWeatherTextView, mDate, mTime, mTempTitle, mTempData);
+    this.setTypeFace(mWeatherTextView, mDate, mTime, mTempData);
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {

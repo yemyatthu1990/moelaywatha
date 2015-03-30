@@ -13,6 +13,17 @@ public class Weather extends RealmObject {
   private float windDirection;
   private RealmList<WeatherCode> weatherCode;
   private int date;
+  private String lastUpdatedTime;
+
+  public String getLastUpdatedTime() {
+    return lastUpdatedTime;
+  }
+
+  public void setLastUpdatedTime(String lastUpdatedTime) {
+    this.lastUpdatedTime = lastUpdatedTime;
+  }
+
+
 
   public float getWindDirection() {
     return windDirection;
