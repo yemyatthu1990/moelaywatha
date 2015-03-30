@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -43,24 +44,20 @@ public class MainActivity extends BaseActivity {
       Timber.d("receive");
       mRealm.executeTransaction(new Realm.Transaction() {
         @Override public void execute(Realm realm) {
-          try{
-            mWeather = realm.where(Weather.class)
-                .equalTo("date",mTodayDate).findFirst();}
-          catch (RealmException exception){
+          try {
+            mWeather = realm.where(Weather.class).equalTo("date", mTodayDate).findFirst();
+          } catch (RealmException exception) {
             Timber.d(exception.getMessage());
           }
         }
       });
-
-      if(mWeather!= null){
-        updateWeatherUi(mWeather);
-             }
+      if(mWeather!=null){
+      updateWeatherUi(mWeather);
+      }
     }
   };
 
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
@@ -73,50 +70,50 @@ public class MainActivity extends BaseActivity {
 
     String hour = WeatherCodeUtil.changeEngToBur(String.valueOf(calendar.get(Calendar.HOUR)));
     String date = WeatherCodeUtil.changeEngToBur(String.valueOf(calendar.get(Calendar.DATE)));
-    mTime.setText(hour+" နာရီ");
-    mDate.setText(date+" ရက်");
 
-    if(mHourOfDay<18 && mHourOfDay>5){
+    mTime.setText(hour + " နာရီ");
+    mDate.setText(date + " ရက်");
+    if (mHourOfDay < 18 && mHourOfDay > 5) {
       setSupportActionBar(mDayToolbar);
       mNightToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mDayToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
-    }
-    else{
+      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mDayToolbar, mWeatherIcon,
+          mHourOfDay, mTempData, mWeatherTextView, mTempTitle, mDate, mTime);
+    } else {
       setSupportActionBar(mNightToolbar);
       mDayToolbar.setVisibility(View.GONE);
-      WeatherCodeUtil.changeWeatherBackground(this,mWeatherBackground,mNightToolbar,mWeatherIcon,mHourOfDay,mTempData,mWeatherTextView,mTempTitle,mDate,mTime);
-
+      WeatherCodeUtil.changeWeatherBackground(this, mWeatherBackground, mNightToolbar, mWeatherIcon,
+          mHourOfDay, mTempData, mWeatherTextView, mTempTitle, mDate, mTime);
     }
+
     //Temporarily Hide toolbar
     getSupportActionBar().hide();
-        mRealm.executeTransaction(new Realm.Transaction() {
+    mRealm.executeTransaction(new Realm.Transaction() {
       @Override public void execute(Realm realm) {
-        try{
-        mWeather = realm.where(Weather.class)
-            .equalTo("date",mTodayDate).findFirst();}
-        catch (RealmException exception){
+        try {
+          mWeather = realm.where(Weather.class).equalTo("date", mTodayDate).findFirst();
+        } catch (RealmException exception) {
           Timber.d(exception.getMessage());
         }
       }
     });
 
-    if(mWeather!= null){
+
+    if (mWeather != null) {
       updateWeatherUi(mWeather);
-    }else{
+    } else {
       WeatherSyncAdapter.syncImmediately(this);
     }
 
+    this.setTypeFace(mWeatherTextView, mDate, mTime, mTempTitle, mTempData);
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu, menu);
     return true;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
@@ -140,7 +137,8 @@ public class MainActivity extends BaseActivity {
     shareIntent.setAction(Intent.ACTION_SEND);
     shareIntent.putExtra(Intent.EXTRA_STREAM,
         WeatherCodeUtil.saveScreenShotToSd(mWeatherBackground));
-    shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.yemyatthu.moelaywatha");
+    shareIntent.putExtra(Intent.EXTRA_TEXT,
+        "https://play.google.com/store/apps/details?id=com.yemyatthu.moelaywatha");
     shareIntent.setType("image/png");
     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     return shareIntent;
@@ -154,6 +152,11 @@ public class MainActivity extends BaseActivity {
     mTempData.setText(tempData+" ဒီဂရီစင်တီဂရိတ်");
     mWeatherIcon.setImageDrawable(WeatherCodeUtil.getWeatherDrawable(MainActivity.this,mWeatherCode,mHourOfDay));
   }
+
+  private void setTypeFace(TextView... textViews) {
+    Typeface pdsTypeface = Typeface.createFromAsset(this.getAssets(), "pyidaungsu-1.2.ttf");
+    for (TextView textView : textViews) {
+      textView.setTypeface(pdsTypeface);
+    }
+  }
 }
-
-
