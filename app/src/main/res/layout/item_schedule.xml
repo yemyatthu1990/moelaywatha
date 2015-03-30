@@ -27,6 +27,7 @@
         android:layout_below="@id/schedule_date"
         tools:src="@drawable/morning_clear"/>
     <TextView
+        android:id="@+id/schedule_degree"
         android:layout_toRightOf="@id/schedule_icon"
         android:layout_alignBottom="@id/schedule_icon"
         android:layout_alignTop="@id/schedule_icon"

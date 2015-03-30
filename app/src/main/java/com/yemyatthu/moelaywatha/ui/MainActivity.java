@@ -1,5 +1,6 @@
 package com.yemyatthu.moelaywatha.ui;
 
+import android.animation.Animator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.yemyatthu.moelaywatha.R;
+import com.yemyatthu.moelaywatha.adapter.ScheduleRecyclerAdapter;
 import com.yemyatthu.moelaywatha.model.Weather;
 import com.yemyatthu.moelaywatha.sync.WeatherSyncAdapter;
 import io.realm.Realm;
@@ -177,11 +179,30 @@ public class MainActivity extends BaseActivity {
   @OnClick(R.id.expanded_menu) void slideUpScheduleList() {
     Timber.d("sliding up");
     if(!mSlideUp) {
-      int padding = getResources().getDimensionPixelSize(R.dimen.padding_large);
+      final int padding = getResources().getDimensionPixelSize(R.dimen.padding_large);
       mWeatherBackground.animate()
           .translationY(-(mWeatherBackground.getHeight() - (mDateContainer.getHeight()+padding)))
           .setDuration(1000)
-          .setStartDelay(200);
+          .setStartDelay(200)
+          .setListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override public void onAnimationEnd(Animator animator) {
+              ScheduleRecyclerAdapter adapter = new ScheduleRecyclerAdapter();
+              mScheduleListContainer.setPadding(0,mDateContainer.getHeight()+padding,0,0);
+              mScheduleRecyclerView.setAdapter(adapter);
+            }
+
+            @Override public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override public void onAnimationRepeat(Animator animator) {
+
+            }
+          });
       mSlideUp=true;
     }else{
       mWeatherBackground.animate()

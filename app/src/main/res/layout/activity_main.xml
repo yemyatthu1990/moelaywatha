@@ -11,7 +11,6 @@
       android:id="@+id/schedule_list_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@color/primary_color"
       android:orientation="vertical"
       tools:visibility="gone">
     <android.support.v7.widget.RecyclerView
